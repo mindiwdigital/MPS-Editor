@@ -1,0 +1,31 @@
+MINDIW PHOTO STUDIO — ROOT FILE UPLOAD
+
+Upload every file in this folder directly into the ROOT of your GitHub repository.
+Do not create or upload any folders.
+
+Required app files:
+  index.html
+  app.js
+  styles.css
+  manifest.webmanifest
+  sw.js
+  downloads.html
+  logo.jpg
+
+Required PWA icon files (also all in the repository root):
+  icon-192.png
+  icon-512.png
+  icon-192-maskable.png
+  icon-512-maskable.png
+  apple-touch-icon.png
+
+GitHub Pages:
+  Repository Settings > Pages > Deploy from a branch > main > /(root) > Save.
+
+Open the published HTTPS website to use the editor. On Android/desktop, use the
+browser's Install app / Add to Home Screen menu. On iPhone/iPad, use Safari's
+Share > Add to Home Screen. The site does not trigger its own install popup.
+
+Note: these are the flat PWA website files. Native Windows .exe and Android .apk
+release builds require a GitHub Actions workflow stored under .github/workflows,
+which is a folder GitHub's web upload interface may need to create separately.

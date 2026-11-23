@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090d1b">
+  <meta name="description" content="Mindiw Photo Studio — a powerful, installable photo editor that works on your device.">
+  <meta name="color-scheme" content="dark">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self' data:; media-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Mindiw Photo Studio">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="logo.jpg" type="image/jpeg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  
+  <link rel="stylesheet" href="styles.css">
+  <title>Mindiw Photo Studio</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-lockup">
+        <img class="brand-logo" src="logo.jpg" alt="Mindiw Photo Studio logo">
+        <div class="brand-copy"><strong>Photo Studio</strong><span>Image editing workspace</span></div>
+      </div>
+      <div class="topbar-center">
+        <span class="workspace-label">Photo editing workspace</span>
+        <span class="saved-indicator" id="saveStatus"><i></i> All changes saved</span>
+      </div>
+      <div class="topbar-actions">
+        <button class="top-btn subtle" id="installButton" title="Open device downloads" hidden>Install app</button>
+        <button class="top-btn subtle" id="openProjectsButton">Projects</button>
+        <button class="top-btn primary" id="exportButton" disabled hidden><span>Export</span><b>↗</b></button>
+        <button class="about-logo-button" id="aboutButton" title="About Mindiw Photo Studio"><img src="logo.jpg" alt="Mindiw Photo Studio"></button>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <section class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-copy">
+          <div class="eyebrow"><span class="eyebrow-dot"></span> YOUR PHOTO WORKSPACE</div>
+          <h1>Make a little<br><em>more of your photos.</em></h1>
+          <p>Open a photo, make careful adjustments, retouch small details and build your own compositions. Your work stays on this device.</p>
+          <div class="welcome-actions">
+            <button class="large-primary" id="startEditingButton"><span>＋</span> Start editing</button>
+            <button class="large-secondary" id="browseProjectsButton">Open a project <span>→</span></button>
+            <a class="large-secondary" href="downloads.html" style="text-decoration:none">Download for your device <span>↓</span></a>
+          </div>
+          <div class="welcome-footnote"><span class="secure-icon">◇</span> Private by design <span class="foot-separator">·</span> Local editing <span class="foot-separator">·</span> Works offline after first load</div>
+        </div>
+        <div class="welcome-art welcome-logo-card">
+          <img src="logo.jpg" alt="Mindiw Photo Studio logo">
+          <div class="welcome-art-caption"><strong>Made for the way you work.</strong><span>Adjust · Retouch · Compose · Export</span></div>
+          <div class="welcome-recent-note">LOCAL WORKSPACE <i></i> No account required</div>
+        </div>
+        <div class="feature-strip">
+          <div><span class="feature-icon">◩</span><span><b>Precise adjustments</b><small>Light, color and detail</small></span></div>
+          <div><span class="feature-icon">▧</span><span><b>Creative layers</b><small>Text, shapes and drawing</small></span></div>
+          <div><span class="feature-icon">⌑</span><span><b>Flexible export</b><small>PNG, JPEG and WebP</small></span></div>
+          <div><span class="feature-icon">⌘</span><span><b>Installable app</b><small>Desktop and mobile</small></span></div>
+        </div>
+      </section>
+
+      <section class="editor-screen" id="editorScreen" hidden>
+        <div class="editor-toolbar">
+          <div class="project-name-area">
+            <button class="back-button" id="backButton" title="Back to start">←</button>
+            <input id="projectName" value="Untitled project" aria-label="Project name" maxlength="64">
+            <span class="local-badge">LOCAL</span>
+          </div>
+          <div class="history-controls">
+            <button class="square-btn" id="undoButton" title="Undo (Ctrl+Z)" disabled>↶</button>
+            <button class="square-btn" id="redoButton" title="Redo (Ctrl+Y)" disabled>↷</button>
+            <span class="toolbar-divider"></span>
+            <button class="square-btn" id="resetButton" title="Reset edits">⟲</button>
+          </div>
+          <div class="toolbar-right">
+            <button class="top-btn subtle" id="saveProjectButton">Save project</button>
+            <button class="top-btn primary" id="exportButtonTop">Export <b>↗</b></button>
+          </div>
+        </div>
+
+        <div class="mobile-history" aria-label="Editing history controls">
+          <button class="mobile-history-btn" id="mobileUndoButton" title="Undo" disabled>↶ <span>Undo</span></button>
+          <button class="mobile-history-btn" id="mobileRedoButton" title="Redo" disabled>↷ <span>Redo</span></button>
+          <span class="mobile-history-divider"></span>
+          <button class="mobile-history-btn" id="mobileResetButton" title="Reset edits">⟲ <span>Reset</span></button>
+          <span class="mobile-history-spacer"></span>
+          <button class="mobile-history-btn mobile-save" id="mobileSaveButton" title="Save project">▣ <span>Save</span></button>
+          <button class="mobile-history-btn mobile-export" id="mobileExportButton" title="Export image">⇩ <span>Export</span></button>
+        </div>
+        <div class="editor-layout">
+          <aside class="tool-sidebar" aria-label="Editing tools">
+            <div class="tool-group-label">EDIT</div>
+            <button class="tool-tab active" data-panel="adjust" title="Adjust"><span>◐</span><small>Adjust</small></button>
+            <button class="tool-tab" data-panel="filters" title="Filters"><span>◈</span><small>Filters</small></button>
+            <button class="tool-tab" data-panel="crop" title="Crop & transform"><span>⤢</span><small>Crop</small></button>
+            <div class="tool-separator"></div>
+            <div class="tool-group-label">CREATE</div>
+            <button class="tool-tab" data-panel="text" title="Text"><span>T</span><small>Text</small></button>
+            <button class="tool-tab" data-panel="shapes" title="Shapes"><span>◇</span><small>Shapes</small></button>
+            <button class="tool-tab" data-panel="draw" title="Draw"><span>✎</span><small>Draw</small></button>
+            <button class="tool-tab" data-panel="retouch" title="Retouch & erase"><span>✧</span><small>Retouch</small></button>
+            <button class="tool-tab" data-panel="select" title="Selections & masks"><span>⬡</span><small>Select</small></button>
+            <button class="tool-tab" data-panel="layers" title="Layers"><span>▤</span><small>Layers</small></button>
+            <button class="tool-tab" data-panel="color" title="Color grading"><span>◉</span><small>Color</small></button>
+            <button class="tool-tab" data-panel="effects" title="Effects"><span>✦</span><small>Effects</small></button>
+            <button class="tool-tab" data-panel="frames" title="Frames & borders"><span>▣</span><small>Frames</small></button>
+            <button class="tool-tab" data-panel="background" title="Background"><span>◩</span><small>BG</small></button>
+            <div class="sidebar-spacer"></div>
+            <button class="tool-tab" data-panel="help" title="Help"><span>?</span><small>Help</small></button>
+          </aside>
+
+          <aside class="properties-panel" id="propertiesPanel">
+            <div class="panel-topline"><div><span class="panel-kicker">STUDIO CONTROLS</span><h2 id="panelTitle">Adjust image</h2></div><button class="panel-close" id="mobilePanelClose" title="Close tools">×</button></div>
+            <div class="panel-content" id="panelContent">
+              <div class="panel-empty"><div class="empty-symbol">◐</div><b>Start with an image</b><p>Import a photo to unlock the editing tools.</p></div>
+            </div>
+          </aside>
+
+          <section class="canvas-workspace" id="canvasWorkspace">
+            <div class="canvas-topline">
+              <div class="canvas-context"><span class="context-dot"></span><span id="canvasContext">No image loaded</span></div>
+              <div class="canvas-actions">
+                <button class="canvas-icon-btn" id="fitButton" title="Fit canvas">Fit</button>
+                <button class="canvas-icon-btn" id="zoomOutButton" title="Zoom out">−</button>
+                <span id="zoomValue">100%</span>
+                <button class="canvas-icon-btn" id="zoomInButton" title="Zoom in">＋</button>
+                <button class="canvas-icon-btn fullscreen-btn" id="fullscreenButton" title="Fullscreen workspace">⛶</button>
+              </div>
+            </div>
+            <div class="canvas-stage" id="canvasStage">
+              <div class="canvas-placeholder" id="canvasPlaceholder">
+                <div class="placeholder-orbit"><span>＋</span></div>
+                <h3>Bring your image to life</h3>
+                <p>Drop an image here or choose a file from your device.</p>
+                <button class="large-primary" id="importButton"><span>↑</span> Import image</button>
+                <small>JPG · PNG · WEBP · AVIF · GIF (first frame)</small>
+              </div>
+              <canvas id="editorCanvas" aria-label="Image editing canvas" hidden></canvas>
+              <canvas id="selectionPreviewCanvas" class="selection-preview-canvas" aria-hidden="true" hidden></canvas>
+              <div class="crop-overlay" id="cropOverlay" hidden><div class="crop-selection" id="cropSelection"><i></i><i></i><i></i><i></i></div></div>
+              <div class="canvas-selection" id="canvasSelection" hidden></div>
+            </div>
+            <div class="canvas-bottomline">
+              <div id="imageDimensions">—</div>
+              <div class="bottom-center-hint" id="toolHint">Select a tool to begin editing</div>
+              <div class="canvas-bottom-actions"><button id="compareButton" title="Hold to compare with original" disabled>◉ Compare</button><button id="toggleGridButton" title="Toggle canvas background">▦</button></div>
+            </div>
+          </section>
+        </div>
+
+        <nav class="mobile-toolbar" aria-label="Mobile editing tools">
+          <button class="mobile-tool active" data-panel="adjust"><span>◐</span><small>Adjust</small></button>
+          <button class="mobile-tool" data-panel="filters"><span>◈</span><small>Filters</small></button>
+          <button class="mobile-tool" data-panel="crop"><span>⤢</span><small>Crop</small></button>
+          <button class="mobile-tool" data-panel="text"><span>T</span><small>Text</small></button>
+          <button class="mobile-tool" data-panel="shapes"><span>◇</span><small>Shapes</small></button>
+          <button class="mobile-tool" data-panel="draw"><span>✎</span><small>Draw</small></button>
+          <button class="mobile-tool" data-panel="retouch"><span>✧</span><small>Retouch</small></button>
+          <button class="mobile-tool" data-panel="select"><span>⬡</span><small>Select</small></button>
+          <button class="mobile-tool" data-panel="color"><span>◉</span><small>Color</small></button>
+          <button class="mobile-tool" data-panel="effects"><span>✦</span><small>Effects</small></button>
+          <button class="mobile-tool" data-panel="frames"><span>▣</span><small>Frame</small></button>
+          <button class="mobile-tool" data-panel="background"><span>◩</span><small>BG</small></button>
+          <button class="mobile-tool" data-panel="layers"><span>▤</span><small>Layers</small></button>
+        </nav>
+      </section>
+
+      <section class="projects-screen" id="projectsScreen" hidden>
+        <div class="projects-header"><div><span class="panel-kicker">YOUR WORKSPACE</span><h1>Projects</h1><p>Saved on this device, ready when you are.</p></div><button class="large-primary" id="newProjectImportButton">＋ New image</button></div>
+        <div class="project-grid" id="projectGrid"><div class="projects-empty"><span>▧</span><b>No saved projects yet</b><small>Import an image and save your first project.</small></div></div>
+        <button class="back-link" id="projectsBackButton">← Back to studio</button>
+      </section>
+    </main>
+
+    <input type="file" id="fileInput" accept="image/*" hidden>
+    <input type="file" id="replaceInput" accept="image/*" hidden>
+    <input type="file" id="overlayFileInput" accept="image/*" hidden>
+    <input type="file" id="batchInput" accept="image/*" multiple hidden>
+    <input type="file" id="lutInput" accept=".cube,text/plain" hidden>
+  </div>
+
+  <div class="modal-backdrop" id="exportModal" hidden>
+    <section class="dialog export-dialog" role="dialog" aria-modal="true" aria-labelledby="exportTitle">
+      <div class="dialog-header"><div><span class="panel-kicker">FINISH YOUR IMAGE</span><h2 id="exportTitle">Export image</h2></div><button class="dialog-close" data-close="exportModal">×</button></div>
+      <div class="export-preview-row"><div class="export-thumb" id="exportThumb"></div><div><b id="exportFileName">mindiw-creation.png</b><small id="exportSizeText">Original dimensions</small></div></div>
+      <label class="form-label" for="exportName">File name</label><input class="dialog-input" id="exportName" value="mindiw-creation">
+      <div class="export-size-box">
+        <div class="section-heading"><b>OUTPUT DIMENSIONS</b><small id="exportRatioLabel">Original aspect ratio</small></div>
+        <div class="form-two"><div><label class="form-label" for="exportWidth">Width (px)</label><input class="dialog-input" id="exportWidth" type="number" min="1" max="12000" step="1"></div><div><label class="form-label" for="exportHeight">Height (px)</label><input class="dialog-input" id="exportHeight" type="number" min="1" max="12000" step="1"></div></div>
+        <div class="export-size-tools"><label class="ratio-lock"><input type="checkbox" id="exportLockRatio" checked> Lock aspect ratio</label><select class="dialog-input" id="exportSizePreset" aria-label="Output size preset"><option value="original">Original size</option><option value="1080">Long edge 1080</option><option value="2048">Long edge 2048</option><option value="3000">Long edge 3000</option><option value="3840">Long edge 3840</option><option value="2x">2× upscale</option><option value="half">50% size</option></select></div>
+        <p class="export-note">Large exports are automatically capped to protect phone and laptop memory. Lock ratio keeps the image proportions unchanged.</p>
+      </div>
+      <div class="form-two"><div><label class="form-label" for="exportFormat">Format</label><select class="dialog-input" id="exportFormat"><option value="image/png">PNG · Lossless</option><option value="image/jpeg">JPEG · Smaller file</option><option value="image/webp">WebP · Modern format</option></select></div><div><label class="form-label" for="exportQuality">Quality <span id="qualityValue">92%</span></label><input class="quality-range" id="exportQuality" type="range" min="50" max="100" value="92"></div></div>
+      <div class="export-note" id="transparencyNote">PNG preserves transparent areas. JPEG will use a white background.</div>
+      <div class="dialog-actions"><button class="large-secondary" data-close="exportModal">Cancel</button><button class="large-primary" id="confirmExportButton">Download image <span>↓</span></button></div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="aboutModal" hidden>
+    <section class="dialog" role="dialog" aria-modal="true" aria-labelledby="aboutTitle"><div class="dialog-header"><div><span class="panel-kicker">MINDIW DIGITAL</span><h2 id="aboutTitle">Mindiw Photo Studio</h2></div><button class="dialog-close" data-close="aboutModal">×</button></div><p class="about-description">A photo editing workspace built by Mindiw Digital. Your photos and saved projects stay on your device. No account or cloud upload is required.</p><div class="about-meta"><span>Version 10.0.0</span><span>Local-first PWA</span><span>© Mindiw Digital</span></div><div class="dialog-actions"><button class="large-primary" data-close="aboutModal">Done</button></div></section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>
